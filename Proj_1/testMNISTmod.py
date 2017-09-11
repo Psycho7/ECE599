@@ -6,7 +6,7 @@ mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 
 class Network(object):
     def __init__(self):
-        lr = 0.5
+        self.lr = 0.5
         self.build_graph()
 
     def build_graph(self):
@@ -16,7 +16,7 @@ class Network(object):
         self.y = tf.nn.softmax(tf.matmul(self.x, W) + b)
         self.y_ = tf.placeholder(tf.float32, [None, 10])
         self.cross_entropy = tf.reduce_mean(-tf.reduce_sum(self.y_ * tf.log(self.y), reduction_indices=[1]))
-        self.train_step = tf.train.GradientDescentOptimizer(0.5).minimize(self.cross_entropy)
+        self.train_step = tf.train.GradientDescentOptimizer(self.lr).minimize(self.cross_entropy)
 
     def train(self):
         self.sess = tf.Session()
