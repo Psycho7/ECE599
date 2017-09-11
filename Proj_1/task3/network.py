@@ -12,6 +12,7 @@ and omits many desirable features.
 #### Libraries
 # Standard library
 import random
+import csv
 
 # Third-party libraries
 import numpy as np
@@ -42,7 +43,7 @@ class Network(object):
         return a
 
     def SGD(self, training_data, epochs, mini_batch_size, eta,
-            test_data=None):
+            outputfile, test_data=None):
         """Train the neural network using mini-batch stochastic
         gradient descent.  The ``training_data`` is a list of tuples
         ``(x, y)`` representing the training inputs and the desired
@@ -51,6 +52,10 @@ class Network(object):
         network will be evaluated against the test data after each
         epoch, and partial progress printed out.  This is useful for
         tracking progress, but slows things down substantially."""
+        output = open(outputfile, 'w')
+        fieldnames = ['epoch', 'correct']
+        writer = csv.DictWriter(output, fieldnames=fieldnames)
+
         if test_data: n_test = len(test_data)
         n = len(training_data)
         for j in xrange(epochs):
@@ -63,8 +68,10 @@ class Network(object):
             if test_data:
                 print "Epoch {0}: {1} / {2}".format(
                     j, self.evaluate(test_data), n_test)
+                writer.writerow({'epoch': j, 'correct': self.evaluate(test_data)})
             else:
                 print "Epoch {0} complete".format(j)
+        output.close()
 
     def update_mini_batch(self, mini_batch, eta):
         """Update the network's weights and biases by applying
