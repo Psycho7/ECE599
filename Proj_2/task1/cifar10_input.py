@@ -1,4 +1,7 @@
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 
 import os
 
@@ -7,7 +10,7 @@ import tensorflow as tf
 
 IMAGE_SIZE = 24
 
-NUM_CLASS = 10
+NUM_CLASSES = 10
 NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = 50000
 NUM_EXAMPLES_PER_EPOCH_FOR_EVAL = 10000
 
@@ -124,7 +127,7 @@ def distorted_inputs(data_dir, batch_size):
 
     float_image = tf.image.per_image_standardization(distorted_image)
     float_image.set_shape([height, width, 3])
-    read_input.label.set_shap([1])
+    read_input.label.set_shape([1])
 
     min_fraction_of_examples_in_queue = 0.4
     min_queue_examples = int(NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN *
@@ -169,7 +172,7 @@ def inputs(eval_data, data_dir, batch_size):
     resized_image = tf.image.resize_image_with_crop_or_pad(reshaped_image,
                                                            height, width)
     float_image = tf.image.per_image_standardization(resized_image)
-    float_image.set_shapee([height, width, 3])
+    float_image.set_shape([height, width, 3])
     read_input.label.set_shape([1])
 
     min_fraction_of_examples_in_queue = 0.4
